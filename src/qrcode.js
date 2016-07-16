@@ -287,22 +287,17 @@ qrcode.grayScaleToBitmap=function(grayScale)
     return bitmap;
 }
 
-qrcode.grayscale = function(){
-    var ret = new Array(qrcode.width*qrcode.height);
-    for (var y = 0; y < qrcode.height; y++)
-    {
-        for (var x = 0; x < qrcode.width; x++)
-        {
-            var gray = qrcode.getPixel(x, y);
-            
-            ret[x+y*qrcode.width] = gray;
-        }
+qrcode.grayscale = function() {
+    var data = qrcode.imagedata.data;
+    var size = qrcode.width * qrcode.height;
+    var ret = new Uint8Array(size);
+
+    for (var index = 0, point = 0; index < size; index++, point += 4) {
+        ret[index] = ((data[point] + data[point+1] + data[point+2]) / 3) | 0;
     }
+
     return ret;
 }
-
-
-
 
 function URShift( number,  bits)
 {
